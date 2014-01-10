@@ -40,7 +40,7 @@ void Config::load_config () {
 
     if (cf.bad () || !cf.is_open ()) {
       cerr << "Config: Could not open file: " << config_fname << endl;
-      throw new LoadError ();
+      throw LoadError ();
       return;
     }
 
@@ -73,7 +73,7 @@ void Config::load_config () {
       int delim = sline.find(',');
       if (delim < 1) {
         cerr << "Config: Could not parse line: " << sline << endl;
-        throw new LoadError ();
+        throw LoadError ();
       } else {
         i.key = sline.substr(0, delim);
         char type = sline[delim+1];
@@ -86,7 +86,7 @@ void Config::load_config () {
             {
               i.type = UNKNOWN;
               cerr << "Config: Unknown type while parsing line: " << sline << endl;
-              throw new LoadError ();
+              throw LoadError ();
               continue;
             }
         }
@@ -94,7 +94,7 @@ void Config::load_config () {
         int delim = sline.find ('=');
         if (delim < 1) {
           cerr << "Config: Could not parse line: " << sline << endl;
-          throw new LoadError ();
+          throw LoadError ();
         } else {
           string val = sline.substr (delim+1, sline.length());
           switch (i.type) {
@@ -128,7 +128,7 @@ void Config::load_config () {
 
   } else {
     cerr << "Config: No config file specified." << endl;
-    throw new LoadError ();
+    throw LoadError ();
     return;
   }
 }
@@ -188,7 +188,7 @@ string Config::get_string (const char *key) {
   }
 
   cerr << "Config: No such key: " << key << " with type: string." << endl;
-  throw new NoSuchKeyException ();
+  throw NoSuchKeyException ();
 }
 
 float Config::get_float (const char *key) {
@@ -200,7 +200,7 @@ float Config::get_float (const char *key) {
   }
 
   cerr << "Config: No such key: " << key << " with type: float." << endl;
-  throw new NoSuchKeyException ();
+  throw NoSuchKeyException ();
 }
 
 int Config::get_int (const char *key) {
@@ -212,7 +212,7 @@ int Config::get_int (const char *key) {
   }
 
   cerr << "Config: No such key: " << key << " with type: integer." << endl;
-  throw new NoSuchKeyException ();
+  throw NoSuchKeyException ();
 }
 
 bool Config::get_bool (const char *key) {
@@ -224,6 +224,6 @@ bool Config::get_bool (const char *key) {
   }
 
   cerr << "Config: No such key: " << key << " with type: bool." << endl;
-  throw new NoSuchKeyException ();
+  throw NoSuchKeyException ();
 }
 
