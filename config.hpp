@@ -30,6 +30,7 @@
 # include <string>
 # include <string.h>
 # include <vector>
+# include <exception>
 
 using namespace std;
 
@@ -41,9 +42,17 @@ class Config {
   private:
     bool   hasfname;
     string config_fname;
-    bool   loaded;
+    bool   loaded = false;
 
   public:
+    class NoSuchKeyException : public exception {
+      virtual const char * what () const throw ();
+    };
+
+    class LoadError : public exception {
+      virtual const char * what () const throw ();
+    };
+
     typedef enum _Type {
       UNKNOWN,
       STRING,
@@ -73,6 +82,7 @@ class Config {
     void load_config ();
     void load_config (const char *);
     void print_config ();
+    bool is_loaded ();
     string get_type_s (Type);
 
     string get_string (const char*);

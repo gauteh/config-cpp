@@ -10,10 +10,20 @@
 # include <fstream>
 # include <string>
 # include <string.h>
+# include <math.h>
+# include <exception>
 
-# include "config.h"
+# include "config.hpp"
 
 using namespace std;
+
+const char * Config::NoSuchKeyException::what () const throw () {
+  return "No such key with this type";
+}
+
+const char * Config::LoadError::what () const throw () {
+  return "Error while loading config file";
+}
 
 Config::Config () {
   config_fname = "";
@@ -30,6 +40,7 @@ void Config::load_config () {
 
     if (cf.bad () || !cf.is_open ()) {
       cerr << "Config: Could not open file: " << config_fname << endl;
+      throw new LoadError ();
       return;
     }
 
@@ -62,6 +73,7 @@ void Config::load_config () {
       int delim = sline.find(',');
       if (delim < 1) {
         cerr << "Config: Could not parse line: " << sline << endl;
+        throw new LoadError ();
       } else {
         i.key = sline.substr(0, delim);
         char type = sline[delim+1];
@@ -74,6 +86,7 @@ void Config::load_config () {
             {
               i.type = UNKNOWN;
               cerr << "Config: Unknown type while parsing line: " << sline << endl;
+              throw new LoadError ();
               continue;
             }
         }
@@ -81,6 +94,7 @@ void Config::load_config () {
         int delim = sline.find ('=');
         if (delim < 1) {
           cerr << "Config: Could not parse line: " << sline << endl;
+          throw new LoadError ();
         } else {
           string val = sline.substr (delim+1, sline.length());
           switch (i.type) {
@@ -100,8 +114,6 @@ void Config::load_config () {
                 if (*i == ' ') val.erase(i);
               if (val == "yes") {
                 i.val_bool = true;
-              } else {
-                i.val_bool = false;
               }
           }
 
@@ -112,9 +124,11 @@ void Config::load_config () {
     }
 
     cf.close ();
+    loaded = true;
 
   } else {
     cerr << "Config: No config file specified." << endl;
+    throw new LoadError ();
     return;
   }
 }
@@ -123,6 +137,10 @@ void Config::load_config (const char *fname) {
   config_fname = fname;
   hasfname = true;
   load_config ();
+}
+
+bool Config::is_loaded () {
+  return loaded;
 }
 
 void Config::print_config () {
@@ -170,7 +188,7 @@ string Config::get_string (const char *key) {
   }
 
   cerr << "Config: No such key: " << key << " with type: string." << endl;
-  return string ("");
+  throw new NoSuchKeyException ();
 }
 
 float Config::get_float (const char *key) {
@@ -182,7 +200,7 @@ float Config::get_float (const char *key) {
   }
 
   cerr << "Config: No such key: " << key << " with type: float." << endl;
-  return .0;
+  throw new NoSuchKeyException ();
 }
 
 int Config::get_int (const char *key) {
@@ -194,7 +212,7 @@ int Config::get_int (const char *key) {
   }
 
   cerr << "Config: No such key: " << key << " with type: integer." << endl;
-  return 0;
+  throw new NoSuchKeyException ();
 }
 
 bool Config::get_bool (const char *key) {
@@ -206,6 +224,6 @@ bool Config::get_bool (const char *key) {
   }
 
   cerr << "Config: No such key: " << key << " with type: bool." << endl;
-  return false;
+  throw new NoSuchKeyException ();
 }
 
