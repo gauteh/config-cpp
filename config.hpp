@@ -38,6 +38,8 @@ using namespace std;
 # define STRINGIFY_I(s) #s
 # define STRINGIFY(s)   STRINGIFY_I(s)
 
+# define MAX_LINE_LENGTH 1024
+
 class Config {
   private:
     bool   hasfname;

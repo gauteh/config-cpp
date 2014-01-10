@@ -45,8 +45,8 @@ void Config::load_config () {
     }
 
     while (!cf.eof()) {
-      char line[1024];
-      cf.getline (line, 1024);
+      char line[MAX_LINE_LENGTH];
+      cf.getline (line, MAX_LINE_LENGTH);
 
       int start = 0;
 
