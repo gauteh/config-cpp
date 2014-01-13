@@ -63,7 +63,7 @@ if not GetOption("verbose_flag"):
 
 # Verbose }}}
 
-env.Append (CPPPATH='..', CPPDEFINES = { 'GIT_DESC' : ('\\"%s\\"' % GIT_DESC) }, CPPFLAGS = ['-g', '-std=c++0x', '-pthread'] )
+env.Append (CPPPATH='..', CPPDEFINES = { 'GIT_DESC' : ('\\"%s\\"' % GIT_DESC) }, CPPFLAGS = ['-g', '-std=c++0x',] )
 
 source = ['../config.cpp',
           'test.cpp',
