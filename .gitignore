@@ -1,2 +1,6 @@
 *#
 *~
+*.o
+test/test_config
+.*
+
