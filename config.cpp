@@ -23,7 +23,6 @@
 # include <fstream>
 # include <string>
 # include <string.h>
-# include <math.h>
 # include <exception>
 
 # include "config.hpp"
