@@ -57,7 +57,7 @@ class Config {
   private:
     bool   hasfname;
     string config_fname;
-    bool   loaded = false;
+    bool   loaded;
 
   public:
     class NoSuchKeyException : public exception {

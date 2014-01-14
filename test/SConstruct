@@ -1,12 +1,6 @@
 import os, sys
 from subprocess import *
 
-def getGitDesc():
-  return Popen('git describe --tags --always', stdout=PIPE, shell=True).stdout.read ().strip ()
-
-
-GIT_DESC = getGitDesc ()
-print "Building " + getGitDesc () + ".."
 env = Environment ()
 
 # Verbose / Non-verbose output{{{
@@ -63,7 +57,7 @@ if not GetOption("verbose_flag"):
 
 # Verbose }}}
 
-env.Append (CPPPATH='..', CPPDEFINES = { 'GIT_DESC' : ('\\"%s\\"' % GIT_DESC) }, CPPFLAGS = ['-g', '-std=c++0x',] )
+env.Append (CPPPATH='..', CPPFLAGS = ['-g', ] )
 
 source = ['../config.cpp',
           'test.cpp',

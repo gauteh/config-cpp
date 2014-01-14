@@ -39,11 +39,13 @@ const char * Config::LoadError::what () const throw () {
 
 Config::Config () {
   config_fname = "";
+  loaded = false;
 }
 
 Config::Config (const char * fname) {
   config_fname = fname;
-  hasfname = true;
+  hasfname     = true;
+  loaded       = false;
 }
 
 void Config::load_config () {
@@ -122,8 +124,8 @@ void Config::load_config () {
               break;
             case BOOL:
               // strip
-              for (auto i = val.begin(); i < val.end (); i++)
-                if (*i == ' ') val.erase(i);
+              for (string::iterator it = val.begin(); it < val.end (); it++)
+                if (*it == ' ') val.erase(it);
               if (val == "yes") {
                 i.val_bool = true;
               }
@@ -160,7 +162,7 @@ void Config::print_config () {
   for (int j = 0; j < (3 * 15); j++)
     cout << "-";
   cout << endl;
-  for (auto i = items.begin (); i < items.end (); i++) {
+  for (vector<Item>::iterator i = items.begin (); i < items.end (); i++) {
     cout << setw (10) << get_type_s (i->type)
          << setw (15) << i->key << setw (15);
 
