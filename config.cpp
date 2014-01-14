@@ -123,11 +123,17 @@ void Config::load_config () {
               sscanf (val.c_str(), "%d", &(i.val_int));
               break;
             case BOOL:
-              // strip
-              for (string::iterator it = val.begin(); it < val.end (); it++)
-                if (*it == ' ') val.erase(it);
+              // strip spaces
+              while (*val.begin() == ' ')
+                val.erase (val.begin());
+
+              while (*--val.end() == ' ')
+                val.erase (--val.end());
+
               if (val == "yes") {
                 i.val_bool = true;
+              } else {
+                i.val_bool = false;
               }
           }
 
